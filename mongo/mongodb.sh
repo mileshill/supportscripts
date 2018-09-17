@@ -27,7 +27,13 @@ sudo ufw allow 27017
 #	{
 #		user: "myUserAdmin",
 #		pwd: "myComplexPassword",
-#		roles [{ role: "userAdminAnyDatabase", db: "admin" }]
+#		roles ["userAdminAnyDatabase"]
 #	}
 # )
-echo "Don't forget to setup the AUTH for instance"
+CONF=$(pwd)/mongod.conf
+if [ -f $CONF ]; then
+	sudo cp $CONF /etc
+else
+	echo "No config file found. Are you in /path/to/supportscripts/mongo ?"
+	exit -1
+fi
