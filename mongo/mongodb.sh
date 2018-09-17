@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Is super user?
 if [ "$EUID" -ne 0 ]; then
 	echo "Please run as sudo"
 	exit
@@ -20,17 +21,6 @@ sudo systemctl enable mongod	# enable to run at startup
 # sudo ufw allow from some_cloud_server_ip/32 to any port 27017
 sudo ufw allow 27017
 
-# Don't foreget to enable AUTH and set the administrator
-# From the mongo cli
-# use my_database
-# db.createuser (
-#	{
-#		user: "myUserAdmin",
-#		pwd: "myComplexPassword",
-#		roles ["userAdminAnyDatabase"]
-#	}
-# )
-
 # Update the config file
 CONF=$(pwd)/mongod.conf
 if [ -f $CONF ]; then
@@ -43,3 +33,17 @@ fi
 # Restart for config to take action
 sudo systemctl restart mongod
 sudo systemctl status mongod
+
+echo "Don't foroget to enable Authorization in the config file!"
+# Don't foreget to enable AUTH and set the administrator
+# From the mongo cli
+# use my_database
+# db.createuser (
+#	{
+#		user: "myUserAdmin",
+#		pwd: "myComplexPassword",
+#		roles [{role: 'readWrite', db: 'dbname'}]
+#	}
+# )
+
+
