@@ -30,6 +30,8 @@ sudo ufw allow 27017
 #		roles ["userAdminAnyDatabase"]
 #	}
 # )
+
+# Update the config file
 CONF=$(pwd)/mongod.conf
 if [ -f $CONF ]; then
 	sudo cp $CONF /etc
@@ -37,3 +39,7 @@ else
 	echo "No config file found. Are you in /path/to/supportscripts/mongo ?"
 	exit -1
 fi
+
+# Restart for config to take action
+sudo systemctl restart mongod
+sudo systemctl status mongod
